@@ -19,7 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,7 +41,7 @@ public class CalculatedTelemetry implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "value")
-    private String value;
+    private double value;
     
     @Basic(optional = false)
     @NotNull
@@ -80,7 +79,7 @@ public class CalculatedTelemetry implements Serializable {
         this.id = id;
     }
 
-    public CalculatedTelemetry(Integer id, String value, Date startDate, Date endDate, Date createdAt) {
+    public CalculatedTelemetry(Integer id, double value, Date startDate, Date endDate, Date createdAt) {
         this.id = id;
         this.value = value;
         this.startDate = startDate;
@@ -96,11 +95,11 @@ public class CalculatedTelemetry implements Serializable {
         this.id = id;
     }
 
-    public String getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
