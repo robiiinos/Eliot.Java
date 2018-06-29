@@ -9,6 +9,7 @@ import com.eliot.dataendpoint.client.ArrayOfDevice;
 import com.eliot.dataendpoint.client.ArrayOfTelemetry;
 import com.eliot.dataendpoint.client.DeviceType;
 import com.eliot.dataendpoint.client.DataEndpoint;
+import com.eliot.model.CalculatedTelemetry;
 import com.eliot.model.CalculatedTelemetryDAO;
 import java.io.StringReader;
 import java.text.DateFormat;
@@ -16,6 +17,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
@@ -24,6 +27,7 @@ import javax.json.JsonReader;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -100,13 +104,13 @@ public class MobileRessource {
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayOfTelemetry deviceSimpleMetrics(
             @QueryParam("deviceId") String deviceId,
-            @QueryParam("deviceType") DeviceType deviceType,
-            @QueryParam("minDate") String minDate,
-            @QueryParam("maxDate") String maxDate) throws ParseException, DatatypeConfigurationException {
+            @QueryParam("deviceType") String deviceType,
+            @QueryParam("startDate") String minDate,
+            @QueryParam("endDate") String maxDate) throws ParseException, DatatypeConfigurationException {
 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date date = format.parse("2018-06-26 00:00:00");
-        Date date2 = format.parse("2018-06-27 00:00:00");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date date = format.parse(minDate);
+        Date date2 = format.parse(maxDate);
 
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(date);
@@ -117,10 +121,8 @@ public class MobileRessource {
 
         System.out.println(xmlGregCal);
         System.out.println(xmlGregCal2);
-        
-        deviceType = DeviceType.CO_2_SENSOR;
 
-        return dataWCF.getBasicHttpBindingIDataEndpoint().getTelemetries(null, deviceType, xmlGregCal, xmlGregCal2);
+        return dataWCF.getBasicHttpBindingIDataEndpoint().getTelemetries(deviceId, DeviceType.fromValue(deviceType), xmlGregCal, xmlGregCal2);
     }
 
     @POST
@@ -144,16 +146,13 @@ public class MobileRessource {
     @GET
     @Path("calculatedMetrics")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response calculatedMetrics(
+    public List<CalculatedTelemetry> calculatedMetrics(
             @QueryParam("deviceId") String deviceId,
             @QueryParam("deviceType") DeviceType deviceType,
             @QueryParam("deviceId") String deviceIdz,
             @QueryParam("deviceId") String deviceIde) {
         
-        
-        
-        resp = Response.status(Response.Status.CONFLICT).build();
-        return resp;
+        return calculated.findById(deviceId);
     }
 
     protected EntityManager getEntityManager() {

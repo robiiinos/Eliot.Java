@@ -159,7 +159,7 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>10.64.50.8/data/DataEndpoint.svc.wsdl</wsdlFile>
+                                <wsdlFile>90.54.31.47/Data/DataEndpoint.svc.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName>com.eliot.dataendpoint.client</packageName>
                             <vmArgs>
@@ -177,7 +177,7 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>10.64.50.8/Admin/AdminEndpoint.svc.wsdl</wsdlFile>
+                                <wsdlFile>90.54.31.47/Admin/AdminEndpoint.svc.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName>com.eliot.adminendpoint.client</packageName>
                             <vmArgs>
