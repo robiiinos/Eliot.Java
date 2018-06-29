@@ -159,13 +159,13 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>90.54.31.47/Data/DataEndpoint.svc.wsdl</wsdlFile>
+                                <wsdlFile>eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName>com.eliot.dataendpoint.client</packageName>
                             <vmArgs>
                                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
                             </vmArgs>
-                            <wsdlLocation>http://10.64.50.8/data/DataEndpoint.svc?wsdl</wsdlLocation>
+                            <wsdlLocation>http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?wsdl</wsdlLocation>
                             <staleFile>${project.build.directory}/jaxws/stale/DataEndpoint.svc.stale</staleFile>
                         </configuration>
                         <id>wsimport-generate-DataEndpoint.svc</id>
@@ -177,13 +177,13 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>90.54.31.47/Admin/AdminEndpoint.svc.wsdl</wsdlFile>
+                                <wsdlFile>eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName>com.eliot.adminendpoint.client</packageName>
                             <vmArgs>
                                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
                             </vmArgs>
-                            <wsdlLocation>http://10.64.50.8/Admin/AdminEndpoint.svc?wsdl</wsdlLocation>
+                            <wsdlLocation>http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?wsdl</wsdlLocation>
                             <staleFile>${project.build.directory}/jaxws/stale/AdminEndpoint.svc.stale</staleFile>
                         </configuration>
                         <id>wsimport-generate-AdminEndpoint.svc</id>

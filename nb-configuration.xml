@@ -16,7 +16,7 @@ Any value defined here will override the pom.xml file value but is only applicab
         <org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_j2eeVersion>1.7-web</org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_j2eeVersion>
         <org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_deploy_2e_server>gfv3ee6</org-netbeans-modules-maven-j2ee.netbeans_2e_hint_2e_deploy_2e_server>
         <org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>ide</org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>
-        <org-netbeans-modules-maven-jaxws._5f_C_5f_DataEndpoint_2e_svc>http://90.54.31.47/Data/DataEndpoint.svc?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_DataEndpoint_2e_svc>
-        <org-netbeans-modules-maven-jaxws._5f_C_5f_AdminEndpoint_2e_svc>http://90.54.31.47/Admin/AdminEndpoint.svc?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AdminEndpoint_2e_svc>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_DataEndpoint_2e_svc>http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_DataEndpoint_2e_svc>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_AdminEndpoint_2e_svc>http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_AdminEndpoint_2e_svc>
     </properties>
 </project-shared-configuration>

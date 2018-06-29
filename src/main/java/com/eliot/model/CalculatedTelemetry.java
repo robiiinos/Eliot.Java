@@ -6,7 +6,6 @@
 package com.eliot.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -61,6 +61,9 @@ public class CalculatedTelemetry implements Serializable {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+    
+    @Column(name = "deviceId")
+    private String deviceId;
     
     @JoinColumn(name = "id_device_type", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -123,6 +126,14 @@ public class CalculatedTelemetry implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+    
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public DeviceType getIdDeviceType() {

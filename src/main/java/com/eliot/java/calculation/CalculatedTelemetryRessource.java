@@ -64,6 +64,11 @@ public class CalculatedTelemetryRessource {
             // Find the related entities
             DeviceType deviceType = device.find(infos.getInt("deviceType"));
             TelemetryType calculatedTelemetryType = telemetry.find(infos.getInt("calculatedTelemetryType"));
+            
+            String deviceId = null;
+            if(infos.containsKey("deviceId")) {
+                deviceId = infos.getString("deviceId");
+            }
 
             // Create new entity and bind variabless
             CalculatedTelemetry entity = new CalculatedTelemetry();
@@ -71,6 +76,7 @@ public class CalculatedTelemetryRessource {
             entity.setStartDate(formatter.parse(infos.getString("startDate")));
             entity.setEndDate(formatter.parse(infos.getString("endDate")));
             entity.setCreatedAt(new Date());
+            entity.setDeviceId(deviceId);
             entity.setIdDeviceType(deviceType);
             entity.setIdTelemetryType(calculatedTelemetryType);
 

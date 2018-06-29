@@ -7,15 +7,11 @@ package com.eliot.model;
 
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.management.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 
 /**
  *
@@ -57,7 +53,7 @@ public class CalculatedTelemetryDAO {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<CalculatedTelemetry> query = builder.createQuery(CalculatedTelemetry.class);
         Root<CalculatedTelemetry> root = query.from(CalculatedTelemetry.class);
-        query.select(root).where(builder.equal(root.get("id"), deviceId));
+        query.select(root).where(builder.equal(root.get("deviceId"), deviceId));
         return em.createQuery(query).getResultList();
     }
     

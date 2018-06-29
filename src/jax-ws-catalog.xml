@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://10.64.50.8/data/DataEndpoint.svc?wsdl" uri="wsdl/10.64.50.8/data/DataEndpoint.svc.wsdl"/>
-    <system systemId="http://10.64.50.8/data/DataEndpoint.svc?xsd=xsd0" uri="wsdl/10.64.50.8/data/DataEndpoint.svc.xsd_xsd0.xsd"/>
-    <system systemId="http://10.64.50.8/data/DataEndpoint.svc?xsd=xsd1" uri="wsdl/10.64.50.8/data/DataEndpoint.svc.xsd_xsd1.xsd"/>
-    <system systemId="http://10.64.50.8/data/DataEndpoint.svc?xsd=xsd2" uri="wsdl/10.64.50.8/data/DataEndpoint.svc.xsd_xsd2.xsd"/>
-    <system systemId="http://10.64.50.8/Admin/AdminEndpoint.svc?wsdl" uri="wsdl/10.64.50.8/Admin/AdminEndpoint.svc.wsdl"/>
-    <system systemId="http://10.64.50.8/Admin/AdminEndpoint.svc?xsd=xsd0" uri="wsdl/10.64.50.8/Admin/AdminEndpoint.svc.xsd_xsd0.xsd"/>
-    <system systemId="http://10.64.50.8/Admin/AdminEndpoint.svc?xsd=xsd1" uri="wsdl/10.64.50.8/Admin/AdminEndpoint.svc.xsd_xsd1.xsd"/>
-    <system systemId="http://10.64.50.8/Admin/AdminEndpoint.svc?xsd=xsd2" uri="wsdl/10.64.50.8/Admin/AdminEndpoint.svc.xsd_xsd2.xsd"/>
-    <system systemId="http://90.54.31.47/Data/DataEndpoint.svc?wsdl" uri="wsdl/90.54.31.47/Data/DataEndpoint.svc.wsdl"/>
-    <system systemId="http://90.54.31.47/data/DataEndpoint.svc?xsd=xsd0" uri="wsdl/90.54.31.47/Data/DataEndpoint.svc.xsd_xsd0.xsd"/>
-    <system systemId="http://90.54.31.47/data/DataEndpoint.svc?xsd=xsd1" uri="wsdl/90.54.31.47/Data/DataEndpoint.svc.xsd_xsd1.xsd"/>
-    <system systemId="http://90.54.31.47/data/DataEndpoint.svc?xsd=xsd2" uri="wsdl/90.54.31.47/Data/DataEndpoint.svc.xsd_xsd2.xsd"/>
-    <system systemId="http://90.54.31.47/Admin/AdminEndpoint.svc?wsdl" uri="wsdl/90.54.31.47/Admin/AdminEndpoint.svc.wsdl"/>
-    <system systemId="http://90.54.31.47/Admin/AdminEndpoint.svc?xsd=xsd0" uri="wsdl/90.54.31.47/Admin/AdminEndpoint.svc.xsd_xsd0.xsd"/>
-    <system systemId="http://90.54.31.47/Admin/AdminEndpoint.svc?xsd=xsd1" uri="wsdl/90.54.31.47/Admin/AdminEndpoint.svc.xsd_xsd1.xsd"/>
-    <system systemId="http://90.54.31.47/Admin/AdminEndpoint.svc?xsd=xsd2" uri="wsdl/90.54.31.47/Admin/AdminEndpoint.svc.xsd_xsd2.xsd"/>
+    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?wsdl" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.wsdl"/>
+    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd0" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd0.xsd"/>
+    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd1" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd1.xsd"/>
+    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd2" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd2.xsd"/>
+    <system systemId="http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?wsdl" uri="wsdl/eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.wsdl"/>
+    <system systemId="http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?xsd=xsd0" uri="wsdl/eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.xsd_xsd0.xsd"/>
+    <system systemId="http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?xsd=xsd1" uri="wsdl/eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.xsd_xsd1.xsd"/>
+    <system systemId="http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?xsd=xsd2" uri="wsdl/eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.xsd_xsd2.xsd"/>
 </catalog>

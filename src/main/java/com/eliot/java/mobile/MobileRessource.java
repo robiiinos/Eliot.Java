@@ -147,10 +147,7 @@ public class MobileRessource {
     @Path("calculatedMetrics")
     @Produces(MediaType.APPLICATION_JSON)
     public List<CalculatedTelemetry> calculatedMetrics(
-            @QueryParam("deviceId") String deviceId,
-            @QueryParam("deviceType") DeviceType deviceType,
-            @QueryParam("deviceId") String deviceIdz,
-            @QueryParam("deviceId") String deviceIde) {
+            @QueryParam("deviceId") String deviceId) {
         
         return calculated.findById(deviceId);
     }
