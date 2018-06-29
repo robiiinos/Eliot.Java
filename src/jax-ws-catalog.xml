@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://10.64.50.8/data/DataEndpoint.svc?wsdl" uri="wsdl/10.64.50.8/data/DataEndpoint.svc.wsdl"/>
+    <system systemId="http://10.64.50.8/data/DataEndpoint.svc?xsd=xsd0" uri="wsdl/10.64.50.8/data/DataEndpoint.svc.xsd_xsd0.xsd"/>
+    <system systemId="http://10.64.50.8/data/DataEndpoint.svc?xsd=xsd1" uri="wsdl/10.64.50.8/data/DataEndpoint.svc.xsd_xsd1.xsd"/>
+    <system systemId="http://10.64.50.8/data/DataEndpoint.svc?xsd=xsd2" uri="wsdl/10.64.50.8/data/DataEndpoint.svc.xsd_xsd2.xsd"/>
+    <system systemId="http://10.64.50.8/Admin/AdminEndpoint.svc?wsdl" uri="wsdl/10.64.50.8/Admin/AdminEndpoint.svc.wsdl"/>
+    <system systemId="http://10.64.50.8/Admin/AdminEndpoint.svc?xsd=xsd0" uri="wsdl/10.64.50.8/Admin/AdminEndpoint.svc.xsd_xsd0.xsd"/>
+    <system systemId="http://10.64.50.8/Admin/AdminEndpoint.svc?xsd=xsd1" uri="wsdl/10.64.50.8/Admin/AdminEndpoint.svc.xsd_xsd1.xsd"/>
+    <system systemId="http://10.64.50.8/Admin/AdminEndpoint.svc?xsd=xsd2" uri="wsdl/10.64.50.8/Admin/AdminEndpoint.svc.xsd_xsd2.xsd"/>
+</catalog>
