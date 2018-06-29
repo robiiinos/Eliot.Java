@@ -11,6 +11,8 @@ import com.eliot.dataendpoint.client.DeviceType;
 import com.eliot.dataendpoint.client.DataEndpoint;
 import com.eliot.model.CalculatedTelemetry;
 import com.eliot.model.CalculatedTelemetryDAO;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,16 +20,11 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -64,26 +61,22 @@ public class MobileRessource {
     @Path("addUser")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addUser(String content) {
-        
-        // Get the data send with the POST request
-        StringReader reader = new StringReader(content);
 
-        // Create a Reader and read then send data 
-        try (JsonReader jreader = Json.createReader(reader)) {
-            JsonObject infos = jreader.readObject();
+        // Get the data send with the POST request and parse it into a JSON
+        JsonParser parser = new JsonParser();
+        JsonObject object = (JsonObject) parser.parse(content).getAsJsonObject();
 
-            String clientId = infos.getString("clientId");
+        String clientId = object.get("clientId").getAsString();
 
-            // Persist the entity in the DB
-            Boolean isCreated = dataWCF.getBasicHttpBindingIDataEndpoint().addUser(clientId);
+        // Persist the entity in the DB
+        Boolean isCreated = dataWCF.getBasicHttpBindingIDataEndpoint().addUser(clientId);
 
-            // Check if entity has been persisted; responding with 201 if yes
-            if (isCreated) {
-                resp = Response.status(Response.Status.CREATED).build();
-                return resp;
-            }
+        // Check if entity has been persisted; responding with 201 if yes
+        if (isCreated) {
+            resp = Response.status(Response.Status.CREATED).build();
+            return resp;
         }
-        
+
         // If no, inform the user that something went wrong / 409
         resp = Response.status(Response.Status.CONFLICT).build();
         return resp;
@@ -119,9 +112,6 @@ public class MobileRessource {
         cal.setTime(date2);
         XMLGregorianCalendar xmlGregCal2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 
-        System.out.println(xmlGregCal);
-        System.out.println(xmlGregCal2);
-
         return dataWCF.getBasicHttpBindingIDataEndpoint().getTelemetries(deviceId, DeviceType.fromValue(deviceType), xmlGregCal, xmlGregCal2);
     }
 
@@ -129,17 +119,17 @@ public class MobileRessource {
     @Path("sendCommand")
     @Consumes(MediaType.APPLICATION_JSON)
     public void sendCommand(String content) {
+        
+        // Get the data send with the POST request and parse it into a JSON
+        JsonParser parser = new JsonParser();
+        JsonObject object = (JsonObject) parser.parse(content).getAsJsonObject();
+
+        String deviceId = object.get("deviceId").getAsString();
+        String command = object.get("command").getAsString();
 
         StringReader reader = new StringReader(content);
 
-        try (JsonReader jreader = Json.createReader(reader)) {
-            JsonObject infos = jreader.readObject();
-
-            String deviceId = infos.getString("deviceId");
-            String command = infos.getString("command");
-
-            // Créer la queue JMS
-        }
+        // Créer la queue JMS
 
     }
 
@@ -147,9 +137,10 @@ public class MobileRessource {
     @Path("calculatedMetrics")
     @Produces(MediaType.APPLICATION_JSON)
     public List<CalculatedTelemetry> calculatedMetrics(
-            @QueryParam("deviceId") String deviceId) {
+            @QueryParam("deviceId") String deviceId,
+            @QueryParam("deviceType") String deviceType) {
         
-        return calculated.findById(deviceId);
+        return calculated.findById(deviceId, DeviceType.fromValue(deviceType));
     }
 
     protected EntityManager getEntityManager() {

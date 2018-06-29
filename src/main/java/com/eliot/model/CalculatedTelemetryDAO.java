@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import com.eliot.dataendpoint.client.DeviceType;
 
 /**
  *
@@ -49,11 +50,12 @@ public class CalculatedTelemetryDAO {
         return em.createQuery(cq).getResultList();
     }
     
-    public List<CalculatedTelemetry> findById(String deviceId) {
+    public List<CalculatedTelemetry> findById(String deviceId, DeviceType deviceType) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<CalculatedTelemetry> query = builder.createQuery(CalculatedTelemetry.class);
         Root<CalculatedTelemetry> root = query.from(CalculatedTelemetry.class);
         query.select(root).where(builder.equal(root.get("deviceId"), deviceId));
+        //query.select(root).where(builder.equal(root.get("idDeviceType"), (deviceType.ordinal() + 1)));
         return em.createQuery(query).getResultList();
     }
     
