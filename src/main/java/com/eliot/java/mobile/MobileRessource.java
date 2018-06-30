@@ -11,17 +11,23 @@ import com.eliot.dataendpoint.client.DeviceType;
 import com.eliot.dataendpoint.client.DataEndpoint;
 import com.eliot.model.CalculatedTelemetry;
 import com.eliot.model.CalculatedTelemetryDAO;
+import com.eliot.model.Command;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -36,6 +42,12 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
+import javax.jms.TextMessage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 /**
  * REST Web Service
@@ -53,6 +65,12 @@ public class MobileRessource {
 
     @WebServiceRef
     private DataEndpoint dataWCF;
+    
+    @Inject
+    private JMSContext context;
+
+    @Resource(lookup = "jms/commandQueue")
+    private Queue commandQueue;
 
     @PersistenceContext(unitName = "lgPU")
     private EntityManager em;
@@ -123,14 +141,37 @@ public class MobileRessource {
         // Get the data send with the POST request and parse it into a JSON
         JsonParser parser = new JsonParser();
         JsonObject object = (JsonObject) parser.parse(content).getAsJsonObject();
+        
+        // create new command;
+        Command command = new Command();
+        command.setDeviceId(object.get("deviceId").getAsString());
+        command.setMessage(object.get("message").getAsString());
+        
+        try {
+        
+            //obtention d'une instance JAXBContext associée au type Payment annoté avec JAX-B
+            JAXBContext jaxbContext = JAXBContext.newInstance(Command.class);
+            
+            //création d'un Marshaller pour transfomer l'objet Java en flux XML
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            StringWriter writer = new StringWriter();
+        
+            //transformation de l'objet en flux XML stocké dans un Writer
+            jaxbMarshaller.marshal(command, writer);
+            String xmlMessage = writer.toString();
+        
+            //affichage du XML dans la console de sortie
+            System.out.println(xmlMessage);
 
-        String deviceId = object.get("deviceId").getAsString();
-        String command = object.get("command").getAsString();
-
-        StringReader reader = new StringReader(content);
-
-        // Créer la queue JMS
-
+            //encapsulation du paiement au format XML dans un objet javax.jms.TextMessage
+            TextMessage msg = context.createTextMessage(xmlMessage);
+        
+            //envoi du message dans la queue paymentQueue
+            context.createProducer().send(commandQueue, msg);
+        
+        } catch (JAXBException ex) {
+            System.err.println(ex);
+        }
     }
 
     @GET
