@@ -84,17 +84,15 @@ public class MobileRessource {
         String clientId = object.get("clientId").getAsString();
 
         // Persist the entity in the DB
-        Boolean isCreated = dataWCF.getBasicHttpBindingIDataEndpoint().addUser(clientId);
-
-        // Check if entity has been persisted; responding with 201 if yes
-        if (isCreated) {
+        try {
+            dataWCF.getBasicHttpBindingIDataEndpoint().addUser(clientId);
+            
             resp = Response.status(Response.Status.CREATED).build();
             return resp;
+        } catch (Exception e) {
+            resp = Response.status(Response.Status.CONFLICT).build();
+            return resp;
         }
-
-        // If no, inform the user that something went wrong / 409
-        resp = Response.status(Response.Status.CONFLICT).build();
-        return resp;
     }
 
     @GET
@@ -178,6 +176,12 @@ public class MobileRessource {
     public List<CalculatedTelemetry> calculatedMetrics(
             @QueryParam("deviceId") String deviceId,
             @QueryParam("deviceType") String deviceType) {
+        
+        if(deviceId.isEmpty())
+            deviceId = null;
+        
+        if(deviceType.isEmpty())
+            deviceType = null;
         
         return calculated.findById(deviceId, DeviceType.fromValue(deviceType));
     }

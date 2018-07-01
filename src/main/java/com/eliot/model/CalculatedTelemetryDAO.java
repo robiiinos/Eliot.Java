@@ -45,24 +45,38 @@ public class CalculatedTelemetryDAO {
     }
 
     public List<CalculatedTelemetry> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(CalculatedTelemetry.class));
         return em.createQuery(cq).getResultList();
     }
     
     public List<CalculatedTelemetry> findById(String deviceId, DeviceType deviceType) {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
+        /*CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<CalculatedTelemetry> query = builder.createQuery(CalculatedTelemetry.class);
         Root<CalculatedTelemetry> root = query.from(CalculatedTelemetry.class);
         query.select(root).where(
                 builder.equal(root.get("deviceId"), deviceId)
                 //builder.equal(root.get("idDeviceType"), (deviceType.ordinal() + 1))
         );
-        return em.createQuery(query).getResultList();
+        return em.createQuery(query).getResultList();*/
+        
+        
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        Root<CalculatedTelemetry> root = cq.from(CalculatedTelemetry.class);
+        
+        if(deviceId != null)
+            cq.where(builder.equal(root.get("deviceId"), deviceId));
+        
+        if(deviceType != null)
+            cq.where(builder.equal(root.join("idDeviceType").get("id"), deviceType.ordinal() + 1));
+        
+        javax.persistence.Query q = em.createQuery(cq);
+        return q.getResultList();
     }
     
     public List<CalculatedTelemetry> findRange(int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(CalculatedTelemetry.class));
         javax.persistence.Query q = em.createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);

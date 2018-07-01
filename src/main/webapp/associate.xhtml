@@ -8,13 +8,15 @@
     </h:head>
     <h:body>
 
-        <h:form>
-            <h:selectOneMenu value="#{adminBean.chooseDevice}">
+        <h:form id="associateForm">
+            <h:message for="associateForm"></h:message>
+            
+            <h:selectOneMenu value="#{adminBean.deviceId}">
                 <f:selectItems value="#{adminBean.devices.device}" var="device"
                                itemLabel="#{device.name.value}" itemValue="#{device.id.value}" />
             </h:selectOneMenu>
             
-            <h:selectOneMenu value="#{adminBean.chooseUser}">
+            <h:selectOneMenu value="#{adminBean.clientId}">
                 <f:selectItems value="#{adminBean.users.user}" var="user"
                                itemLabel="#{user.clientId.value}" itemValue="#{user.clientId.value}" />
             </h:selectOneMenu>
@@ -22,7 +24,6 @@
             <br /><br />
 
             <h:commandButton value="Submit" action="#{adminBean.associateUserDevices}" />
-            <h:commandButton value="Reset" type="reset" />
         </h:form>
         
     </h:body>

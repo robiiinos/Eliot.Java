@@ -8,15 +8,21 @@
     </h:head>
     <h:body>
         
-        <ul>
+        <h2>
+            <h:outputText value = "Devices list :" />
+        </h2>
+        
+        <ul style="margin-top: 25px">
             <ui:repeat value="#{adminBean.devices.device}" var="device">
-                <li style="margin-top: 50px;">
-                    <h2>
-                        <h:outputText value="#{device.name.value}" />
-                    </h2>
+                <li style="margin-top: 8px;">
+                    <p>
+                        <h:outputText value="#{device.deviceType}" /> || <h:outputText value="#{device.name.value}" />
+                    </p>
                 </li>
             </ui:repeat>
         </ul>
+        
+        <h:form><h:commandButton value="Go Back" action="back"/></h:form>
         
     </h:body>
 </html>

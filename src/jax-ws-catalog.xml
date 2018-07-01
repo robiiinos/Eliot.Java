@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?wsdl" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.wsdl"/>
-    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd0" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd0.xsd"/>
-    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd1" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd1.xsd"/>
-    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd2" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd2.xsd"/>
     <system systemId="http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?wsdl" uri="wsdl/eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.wsdl"/>
     <system systemId="http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?xsd=xsd0" uri="wsdl/eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.xsd_xsd0.xsd"/>
     <system systemId="http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?xsd=xsd1" uri="wsdl/eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.xsd_xsd1.xsd"/>
     <system systemId="http://eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc?xsd=xsd2" uri="wsdl/eliotadminendpoint.azurewebsites.net/AdminEndpoint.svc.xsd_xsd2.xsd"/>
+    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?wsdl" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.wsdl"/>
+    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd0" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd0.xsd"/>
+    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd1" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd1.xsd"/>
+    <system systemId="http://eliotdataendpoint.azurewebsites.net/DataEndpoint.svc?xsd=xsd2" uri="wsdl/eliotdataendpoint.azurewebsites.net/DataEndpoint.svc.xsd_xsd2.xsd"/>
 </catalog>

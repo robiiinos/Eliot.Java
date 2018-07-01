@@ -8,12 +8,16 @@
     </h:head>
     <h:body>
         
-        <ul>
+        <h2>
+            <h:outputText value = "Users list :" />
+        </h2>
+        
+        <ul style="margin-top: 25px">
             <ui:repeat value="#{adminBean.users.user}" var="user">
-                <li style="margin-top: 50px;">
-                    <h2>
+                <li style="margin-top: 8px;">
+                    <p>
                         <h:outputText value="#{user.clientId.value}" />
-                    </h2>
+                    </p>
                 </li>
             </ui:repeat>
         </ul>
