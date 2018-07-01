@@ -54,8 +54,10 @@ public class CalculatedTelemetryDAO {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<CalculatedTelemetry> query = builder.createQuery(CalculatedTelemetry.class);
         Root<CalculatedTelemetry> root = query.from(CalculatedTelemetry.class);
-        query.select(root).where(builder.equal(root.get("deviceId"), deviceId));
-        //query.select(root).where(builder.equal(root.get("idDeviceType"), (deviceType.ordinal() + 1)));
+        query.select(root).where(
+                builder.equal(root.get("deviceId"), deviceId)
+                //builder.equal(root.get("idDeviceType"), (deviceType.ordinal() + 1))
+        );
         return em.createQuery(query).getResultList();
     }
     

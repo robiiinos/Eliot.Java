@@ -55,9 +55,4 @@ public class Command implements Serializable {
         this.message = message;
     }
     
-    @Override
-    public String toString() {
-        return "com.eliot.java.calculation.Command[ deviceId=" + getDeviceId() + " ]";
-    }
-    
 }

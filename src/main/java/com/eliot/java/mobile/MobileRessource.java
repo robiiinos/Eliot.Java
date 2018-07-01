@@ -14,7 +14,6 @@ import com.eliot.model.CalculatedTelemetryDAO;
 import com.eliot.model.Command;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -66,11 +63,11 @@ public class MobileRessource {
     @WebServiceRef
     private DataEndpoint dataWCF;
     
-    @Inject
-    private JMSContext context;
+    //@Inject
+    //private JMSContext context;
 
-    @Resource(lookup = "jms/commandQueue")
-    private Queue commandQueue;
+    //@Resource(lookup = "jms/commandQueue")
+    //private Queue commandQueue;
 
     @PersistenceContext(unitName = "lgPU")
     private EntityManager em;
@@ -146,7 +143,7 @@ public class MobileRessource {
         Command command = new Command();
         command.setDeviceId(object.get("deviceId").getAsString());
         command.setMessage(object.get("message").getAsString());
-        
+        /*
         try {
         
             //obtention d'une instance JAXBContext associée au type Payment annoté avec JAX-B
@@ -172,6 +169,7 @@ public class MobileRessource {
         } catch (JAXBException ex) {
             System.err.println(ex);
         }
+        */
     }
 
     @GET
