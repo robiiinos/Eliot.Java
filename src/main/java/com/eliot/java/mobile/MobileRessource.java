@@ -12,19 +12,18 @@ import com.eliot.dataendpoint.client.DataEndpoint;
 import com.eliot.model.CalculatedTelemetry;
 import com.eliot.model.CalculatedTelemetryDAO;
 import com.eliot.model.Command;
+import com.eliot.model.TelemetryType;
+import com.eliot.model.TelemetryTypeDAO;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
-import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -39,12 +38,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
-import javax.jms.JMSContext;
-import javax.jms.Queue;
-import javax.jms.TextMessage;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * REST Web Service
@@ -57,17 +52,17 @@ public class MobileRessource {
     
     @EJB
     private CalculatedTelemetryDAO calculated;
+    
+    @EJB
+    private TelemetryTypeDAO telemetry;
 
     private Response resp;
 
     @WebServiceRef
     private DataEndpoint dataWCF;
     
-    //@Inject
-    //private JMSContext context;
-
-    //@Resource(lookup = "jms/commandQueue")
-    //private Queue commandQueue;
+    // Queue name for RabbitMQ
+    private final static String QUEUE_NAME = "commandQueue";
 
     @PersistenceContext(unitName = "lgPU")
     private EntityManager em;
@@ -125,13 +120,13 @@ public class MobileRessource {
         cal.setTime(date2);
         XMLGregorianCalendar xmlGregCal2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 
-        return dataWCF.getBasicHttpBindingIDataEndpoint().getTelemetries(deviceId, DeviceType.fromValue(deviceType), xmlGregCal, xmlGregCal2);
+        return dataWCF.getBasicHttpBindingIDataEndpoint().getTelemetries(deviceId, DeviceType.valueOf(deviceType), xmlGregCal, xmlGregCal2);
     }
 
     @POST
     @Path("sendCommand")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void sendCommand(String content) {
+    public Response sendCommand(String content) throws IOException, TimeoutException {
         
         // Get the data send with the POST request and parse it into a JSON
         JsonParser parser = new JsonParser();
@@ -141,49 +136,30 @@ public class MobileRessource {
         Command command = new Command();
         command.setDeviceId(object.get("deviceId").getAsString());
         command.setMessage(object.get("message").getAsString());
-        /*
-        try {
         
-            //obtention d'une instance JAXBContext associée au type Payment annoté avec JAX-B
-            JAXBContext jaxbContext = JAXBContext.newInstance(Command.class);
-            
-            //création d'un Marshaller pour transfomer l'objet Java en flux XML
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            StringWriter writer = new StringWriter();
-        
-            //transformation de l'objet en flux XML stocké dans un Writer
-            jaxbMarshaller.marshal(command, writer);
-            String xmlMessage = writer.toString();
-        
-            //affichage du XML dans la console de sortie
-            System.out.println(xmlMessage);
-
-            //encapsulation du paiement au format XML dans un objet javax.jms.TextMessage
-            TextMessage msg = context.createTextMessage(xmlMessage);
-        
-            //envoi du message dans la queue paymentQueue
-            context.createProducer().send(commandQueue, msg);
-        
-        } catch (JAXBException ex) {
-            System.err.println(ex);
-        }
-        */
+        // Do the logic here.
+    }
+    
+    @GET
+    @Path("calculatedTypeMetrics")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<TelemetryType> calculatedMetrics() {
+        return telemetry.findAll();
     }
 
     @GET
     @Path("calculatedMetrics")
     @Produces(MediaType.APPLICATION_JSON)
     public List<CalculatedTelemetry> calculatedMetrics(
-            @QueryParam("deviceId") String deviceId,
-            @QueryParam("deviceType") String deviceType) {
+            @QueryParam("calculatedType") Integer telemetryType,
+            @QueryParam("startDate") String startDate,
+            @QueryParam("endDate") String endDate) throws ParseException {
         
-        if(deviceId.isEmpty())
-            deviceId = null;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date dateS = format.parse(startDate);
+        Date dateE = format.parse(endDate);
         
-        if(deviceType.isEmpty())
-            deviceType = null;
-        
-        return calculated.findById(deviceId, DeviceType.fromValue(deviceType));
+        return calculated.findByTelemetryType(telemetry.find(telemetryType), null, dateS, dateE);
     }
 
     protected EntityManager getEntityManager() {
