@@ -5,9 +5,9 @@
  */
 package com.eliot.java.calculation;
 
+import com.eliot.dataendpoint.client.DeviceType;
 import com.eliot.model.CalculatedTelemetry;
 import com.eliot.model.CalculatedTelemetryDAO;
-import com.eliot.model.DeviceType;
 import com.eliot.model.DeviceTypeDAO;
 import com.eliot.model.TelemetryType;
 import com.eliot.model.TelemetryTypeDAO;
@@ -18,12 +18,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -46,6 +50,20 @@ public class CalculatedTelemetryRessource {
 
     @PersistenceContext(unitName = "lgPU")
     private EntityManager em;
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getlastEntry(@QueryParam("deviceType") String deviceType) {
+        try {
+            CalculatedTelemetry calculatedT =  (CalculatedTelemetry) calculated.findByDeviceType(DeviceType.fromValue(deviceType));
+            
+            resp = Response.status(Response.Status.OK).entity(calculatedT.getCreatedAt()).build();
+            return resp;
+        } catch(EJBException e) {
+            resp = Response.status(Response.Status.NO_CONTENT).build();
+            return resp;
+        }
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -65,7 +83,7 @@ public class CalculatedTelemetryRessource {
         }
         
         // Find the related entities with the given ID's
-        DeviceType deviceType = device.find(object.get("deviceType").getAsInt());
+        com.eliot.model.DeviceType deviceType = device.find(object.get("deviceType").getAsInt());
         TelemetryType calculatedTelemetryType = telemetry.find(object.get("calculatedTelemetryType").getAsInt());
 
         // Create new entity and bind variabless
@@ -88,7 +106,7 @@ public class CalculatedTelemetryRessource {
         }
         
         // If no, inform the user that something went wrong / 409
-        resp = Response.status(Response.Status.CONFLICT).build();
+        resp = Response.status(Response.Status.CREATED).build();
         return resp;
     }
 
