@@ -14,6 +14,7 @@ import com.eliot.model.CalculatedTelemetryDAO;
 import com.eliot.model.Command;
 import com.eliot.model.TelemetryType;
 import com.eliot.model.TelemetryTypeDAO;
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 import java.text.DateFormat;
@@ -38,6 +39,9 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.Channel;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
@@ -57,12 +61,17 @@ public class MobileRessource {
     private TelemetryTypeDAO telemetry;
 
     private Response resp;
+    private Gson gson;
 
     @WebServiceRef
     private DataEndpoint dataWCF;
     
     // Queue name for RabbitMQ
     private final static String QUEUE_NAME = "commandQueue";
+    private final static String QUEUE_HOST = "40.89.135.29";
+    private final static Integer QUEUE_PORT = 5672;
+    private final static String QUEUE_USERNAME = "admin";
+    private final static String QUEUE_PASSWORD = "atlantis";
 
     @PersistenceContext(unitName = "lgPU")
     private EntityManager em;
@@ -137,7 +146,28 @@ public class MobileRessource {
         command.setDeviceId(object.get("deviceId").getAsString());
         command.setMessage(object.get("message").getAsString());
         
-        // Do the logic here.
+        try {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost(QUEUE_HOST);
+            factory.setPort(QUEUE_PORT);
+            factory.setUsername(QUEUE_USERNAME);
+            factory.setPassword(QUEUE_PASSWORD);
+            
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            channel.basicPublish("", QUEUE_NAME, null, gson.toJson(command).getBytes());
+
+            channel.close();
+            connection.close();
+
+            resp = Response.status(Response.Status.OK).build();
+            return resp;
+        } catch (IOException | TimeoutException e) {
+            resp = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return resp;
+        }
     }
     
     @GET
