@@ -77,10 +77,8 @@ public class CalculatedTelemetryRessource {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
         // Check if the JSON has the deviceId specified, if not => null
-        String deviceId = null;
-        if (object.has("deviceId")) {
-            deviceId = object.get("deviceId").getAsString();
-        }
+        String deviceId;
+        deviceId = object.has("deviceId") ? object.get("deviceId").getAsString() : null;
         
         // Find the related entities with the given ID's
         com.eliot.model.DeviceType deviceType = device.find(object.get("deviceType").getAsInt());
@@ -100,7 +98,7 @@ public class CalculatedTelemetryRessource {
         calculated.create(entity);
 
         // Check if entity has been persisted; responding with 201 if yes
-        if (calculated.contains(entity)) {
+        if (em.contains(entity)) {
             resp = Response.status(Response.Status.CREATED).build();
             return resp;
         }
