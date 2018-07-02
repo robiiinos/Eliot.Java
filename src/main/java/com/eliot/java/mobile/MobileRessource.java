@@ -44,6 +44,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
+import javax.ws.rs.DefaultValue;
 
 /**
  * REST Web Service
@@ -66,7 +67,7 @@ public class MobileRessource {
     @WebServiceRef
     private DataEndpoint dataWCF;
     
-    // Queue name for RabbitMQ
+    // Queue credentials / informations for RabbitMQ
     private final static String QUEUE_NAME = "commandQueue";
     private final static String QUEUE_HOST = "40.89.135.29";
     private final static Integer QUEUE_PORT = 5672;
@@ -104,9 +105,12 @@ public class MobileRessource {
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayOfDevice userDeviceType(
             @QueryParam("clientId") String clientId,
-            @QueryParam("deviceType") DeviceType deviceType) {
-
-        return dataWCF.getBasicHttpBindingIDataEndpoint().getUserDevices(clientId, deviceType);
+            @DefaultValue("none") @QueryParam("deviceType") String deviceType) {
+        
+        DeviceType device;
+        device = "none".equals(deviceType) ? null : DeviceType.fromValue(deviceType);
+        
+        return dataWCF.getBasicHttpBindingIDataEndpoint().getUserDevices(clientId, device);
     }
 
     @GET
@@ -114,10 +118,13 @@ public class MobileRessource {
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayOfTelemetry deviceSimpleMetrics(
             @QueryParam("deviceId") String deviceId,
-            @QueryParam("deviceType") String deviceType,
+            @DefaultValue("none") @QueryParam("deviceType") String deviceType,
             @QueryParam("startDate") String minDate,
             @QueryParam("endDate") String maxDate) throws ParseException, DatatypeConfigurationException {
 
+        DeviceType device;
+        device = "none".equals(deviceType) ? null : DeviceType.fromValue(deviceType);
+        
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         Date date = format.parse(minDate);
         Date date2 = format.parse(maxDate);
@@ -129,7 +136,7 @@ public class MobileRessource {
         cal.setTime(date2);
         XMLGregorianCalendar xmlGregCal2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 
-        return dataWCF.getBasicHttpBindingIDataEndpoint().getTelemetries(deviceId, DeviceType.valueOf(deviceType), xmlGregCal, xmlGregCal2);
+        return dataWCF.getBasicHttpBindingIDataEndpoint().getTelemetries(deviceId, device, xmlGregCal, xmlGregCal2);
     }
 
     @POST
