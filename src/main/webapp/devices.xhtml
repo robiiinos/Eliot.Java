@@ -16,13 +16,11 @@
             <ui:repeat value="#{adminBean.devices.device}" var="device">
                 <li style="margin-top: 8px;">
                     <p>
-                        <h:outputText value="#{device.deviceType}" /> || <h:outputText value="#{device.name.value}" />
+                        <h:outputText value="#{device.id.value}" /> || <h:outputText value="#{device.name.value}" /> (<h:outputText value="#{device.deviceType}" />)
                     </p>
                 </li>
             </ui:repeat>
         </ul>
-        
-        <h:form><h:commandButton value="Go Back" action="back"/></h:form>
         
     </h:body>
 </html>

@@ -62,7 +62,6 @@ public class MobileRessource {
     private TelemetryTypeDAO telemetry;
 
     private Response resp;
-    private Gson gson;
 
     @WebServiceRef
     private DataEndpoint dataWCF;
@@ -153,6 +152,9 @@ public class MobileRessource {
         command.setDeviceId(object.get("deviceId").getAsString());
         command.setMessage(object.get("message").getAsString());
         
+        Gson gson = new Gson();
+        String message = gson.toJson(command);
+
         try {
             ConnectionFactory factory = new ConnectionFactory();
             factory.setHost(QUEUE_HOST);
@@ -164,7 +166,7 @@ public class MobileRessource {
             Channel channel = connection.createChannel();
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            channel.basicPublish("", QUEUE_NAME, null, gson.toJson(command).getBytes());
+            channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
 
             channel.close();
             connection.close();
@@ -172,7 +174,7 @@ public class MobileRessource {
             resp = Response.status(Response.Status.OK).build();
             return resp;
         } catch (IOException | TimeoutException e) {
-            resp = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            resp = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
             return resp;
         }
     }
@@ -189,14 +191,12 @@ public class MobileRessource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<CalculatedTelemetry> calculatedMetrics(
             @QueryParam("calculatedType") Integer telemetryType,
-            @QueryParam("startDate") String startDate,
-            @QueryParam("endDate") String endDate) throws ParseException {
+            @QueryParam("startDate") String startDate) throws ParseException {
         
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         Date dateS = format.parse(startDate);
-        Date dateE = format.parse(endDate);
         
-        return calculated.findByTelemetryType(telemetry.find(telemetryType), null, dateS, dateE);
+        return calculated.findByTelemetryType(telemetry.find(telemetryType), dateS);
     }
 
     protected EntityManager getEntityManager() {

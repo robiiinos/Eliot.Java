@@ -14,7 +14,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.eliot.dataendpoint.client.DeviceType;
 import java.util.Date;
-import javax.persistence.TemporalType;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 
@@ -54,27 +53,22 @@ public class CalculatedTelemetryDAO {
         return em.createQuery(cq).getResultList();
     }
     
-    public List<CalculatedTelemetry> findByTelemetryType(TelemetryType telemetryType, String deviceId, Date startDate, Date endDate) {
+    public List<CalculatedTelemetry> findByTelemetryType(TelemetryType telemetryType, Date startDate) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         CriteriaBuilder builder = em.getCriteriaBuilder();
         Root<CalculatedTelemetry> root = cq.from(CalculatedTelemetry.class);
         
-        cq.where(builder.equal(root.join("idTelemetryType").get("id"), telemetryType.getId()));
-        
-        if(deviceId != null)
-            cq.where(builder.equal(root.get("deviceId"), deviceId));
-
-        ParameterExpression<Date> parameter = builder.parameter(Date.class);
-        
-        Predicate startDatePredicate = builder.greaterThanOrEqualTo(root.get("startDate").as(Date.class), parameter);
-        Predicate endDatePredicate = builder.lessThanOrEqualTo(root.get("endDate").as(Date.class), parameter);
-        
+        ParameterExpression<Date> parameterDate = builder.parameter(Date.class);
+        Predicate startDatePredicate = builder.greaterThanOrEqualTo(root.get("startDate").as(Date.class), parameterDate);
         cq.where(startDatePredicate);
-        cq.where(endDatePredicate);
+        
+        ParameterExpression<Integer> parameterInt = builder.parameter(Integer.class);
+        Predicate temetryTypePredicate = builder.equal(root.join("idTelemetryType").get("id"), parameterInt);
+        cq.where(temetryTypePredicate);
         
         javax.persistence.Query q = em.createQuery(cq);
-        q.setParameter(parameter, startDate, TemporalType.TIMESTAMP);
-        q.setParameter(parameter, endDate, TemporalType.TIMESTAMP);
+        q.setParameter(parameterInt, telemetryType.getId());
+        q.setParameter(parameterDate, startDate);
         return q.getResultList();
     }
     
